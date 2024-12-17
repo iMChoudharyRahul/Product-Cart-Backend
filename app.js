@@ -1,10 +1,11 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
+import userRouter from "./src/routers/user.router.js";
 
 const app = express();
 
 /**
- * Common Middleware: 
+ * Common Middleware:
  *  1. cookie-parser middleware: Use the cookie-parser middleware to handle cookies in the request header
  *  2. Middleware for handling JSON data: Middleware for handling JSON data in the request body
  *  3. Middleware for handling URL-encoded data: Middleware that parses the urlencoded data
@@ -19,21 +20,22 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 //Middleware to serve static files
 app.use(express.static("public"));
 app.use(
-    //Enable Cross-Origin Resource Sharing (CORS) middleware between two different origin(fronted-backend)
-    cors({
-      origin: "*",
-      credentials: true,
-    })
-  );
+  //Enable Cross-Origin Resource Sharing (CORS) middleware between two different origin(fronted-backend)
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+//router middleware
+app.use("/api/v1/user", userRouter);
 
-//first api 
-app.get('/', (req, res)=> {
-    res.send("<h2>Hello! this is our first api server</h2>");
+//first api
+app.get("/", (req, res) => {
+  res.send("<h2>Hello! this is our first api server</h2>");
 });
 
-app.all('*', (req, res)=> {
-    res.status(404).send("<h2>Page Not found.....</h2>");
+app.all("*", (req, res) => {
+  res.status(404).send("<h2>Page Not found.....</h2>");
 });
 
-
-export {app};
+export { app };
